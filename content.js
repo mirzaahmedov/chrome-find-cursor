@@ -1,14 +1,27 @@
 const WIDTH = 60
 
-let mouseX, mouseY;
+let mouseX = null, 
+    mouseY = null,
+    ctrlKey = false
 
-window.addEventListener('mousemove', function (e) {
+document.addEventListener('mouseleave', function () {
+  mouseX = null;
+  mouseY = null;
+});
+document.addEventListener('mousemove', function (e) {
   mouseX = e.clientX;
   mouseY = e.clientY;
 });
-
-window.addEventListener('keyup', function (e) {
-  if (e.key === ' ' && e.ctrlKey) {
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Control') {
+    ctrlKey = true;
+  }
+});
+document.addEventListener('keyup', function (e) {
+  if (e.key === 'Control') {
+    ctrlKey = false;
+  }
+  if (e.key === ' ' && ctrlKey && mouseX !== null && mouseY !== null) {
     const div = document.createElement('div');
     div.style.boxSizing = 'content-box';
     div.style.position = 'fixed';
@@ -24,7 +37,7 @@ window.addEventListener('keyup', function (e) {
     document.body.appendChild(div);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        div.style.border = '1000px solid rgba(255, 255, 0, 0.3)';
+        div.style.border = '500px solid rgba(255, 255, 0, 0.0)';
       });
     });
     setTimeout(() => {
